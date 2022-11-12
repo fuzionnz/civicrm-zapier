@@ -3,9 +3,6 @@ const test = (z, bundle) => {
   return z.request({
       url: bundle.authData.baseUrl + '/civicrm/zapierauth?apiKey='+ bundle.authData.api_key +'&key=' + bundle.authData.key,
     }).then((response) => {
-
-
-
       return response;
     });
 };

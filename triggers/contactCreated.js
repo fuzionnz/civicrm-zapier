@@ -1,52 +1,17 @@
-const subscribeHook = async (z, bundle) => {
-
-  const data = {
-    webhookUrl: bundle.targetUrl,
-    name: 'Triggers when the contact is created.',
-    description: 'Created via Zapier',
-    triggers: ['create_contact']
-  };
-
-  const options = {
-    url: bundle.authData.baseUrl + '/civicrm/zaphooks/new',
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: {
-      'content-type': 'application/json'
-    }
-  };
-
-  return z.request(options).then(response => response.json);
-};
-
-
-const unsubscribeHook = (z, bundle) => {
-  // bundle.subscribeData contains the parsed response JSON from the subscribe
-  // request made initially.
-  const hookId = bundle.subscribeData.hook.id;
-
-  // You can build requests and our client will helpfully inject all the variables
-  // you need to complete. You can also register middleware to control this.
-  const options = {
-    url: bundle.authData.baseUrl + '/civicrm/zaphooks/new?hook='+hookId+'&delete=1',
-    method: 'DELETE',
-  };
-
-  // You may return a promise or a normal data structure from any perform method.
-  return z.request(options)
-    .then((response) => JSON.parse(response.content));
-};
+const TriggerHelper = require('./triggerHelper');
+const triggerHelper = new TriggerHelper('create_contact', 'Triggers when the contact is created');
 
 const listContacts = (z, bundle) => {
+  // var field_list = triggerHelper.getContactFields();
 
-  const contact = {
-    id: bundle.cleanedRequest.id,
-    first_name: bundle.cleanedRequest.first_name,
-    last_name: bundle.cleanedRequest.last_name,
-    email: bundle.cleanedRequest.email,
-  };
+  // const contact = {
+  //   id: bundle.cleanedRequest.id,
+  //   first_name: bundle.cleanedRequest.first_name,
+  //   last_name: bundle.cleanedRequest.last_name,
+  //   email: bundle.cleanedRequest.email,
+  // };
 
-  return [contact];
+  return [bundle.cleanedRequest];
 
 };
 
@@ -76,8 +41,8 @@ module.exports = {
   // `operation` is where the business logic goes.
   operation: {
     type: 'hook',
-    performSubscribe: subscribeHook,
-    performUnsubscribe: unsubscribeHook,
+    performSubscribe: triggerHelper.subscribeHook,
+    performUnsubscribe: triggerHelper.unsubscribeHook,
     // `inputFields` can define the fields a user could provide,
     // we'll pass them in as `bundle.inputData` later.
     perform: listContacts,
@@ -101,11 +66,12 @@ module.exports = {
     // For a more complete example of using dynamic fields see
     // https://github.com/zapier/zapier-platform-cli#customdynamic-fields.
     // Alternatively, a static field definition should be provided, to specify labels for the fields
-    outputFields: [
-      { key: 'id', label: 'Contact ID' },
-      { key: 'first_name', label: 'First Name' },
-      { key: 'last_name', label: 'Last Name' },
-      { key: 'email', label: 'Email Address' },
-    ],
+    outputFields: [triggerHelper.getContactFields],
+    // outputFields: [
+    //   { key: 'id', label: 'Contact ID' },
+    //   { key: 'first_name', label: 'First Name' },
+    //   { key: 'last_name', label: 'Last Name' },
+    //   { key: 'email', label: 'Email Address' },
+    // ],
   },
 };
