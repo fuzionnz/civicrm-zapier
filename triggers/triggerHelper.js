@@ -56,19 +56,30 @@ TriggerHelper = function(triggerType, hookDescription) {
       });
       return fieldList;
     });
+  };
 
-    // return z.request(options)
-    // var fieldList = [];
-    // $.ajax({
-    //   url: field_url,
-    //   success: function(data) {
-    //     $.each(data.values, function( index, value ) {
-    //       fieldList.push({key: value.name, label: value.title})
-    //     });
-    //     return fieldList;
-    //   }
-    // })
-    // return fieldList;
+  this.getParticipantFields = (z, bundle) => {
+    var field_url = bundle.authData.baseUrl+'/sites/all/modules/civicrm/extern/rest.php?entity=Participant&action=getfields&json={}&api_key='+ bundle.authData.api_key +'&key=' + bundle.authData.key;
+
+    return z.request({
+      url: field_url,
+    }).then((response) => {
+      var fieldList = [];
+      $.each(response.values, function( index, value ) {
+        fieldList.push({key: value.name, label: value.title})
+      });
+      // Include few more contact fields separately.
+      fieldList.push({key: 'contact_first_name', label: 'Contact First Name'});
+      fieldList.push({key: 'contact_last_name', label: 'Contact Last Name'});
+      fieldList.push({key: 'contact_email', label: 'Contact Email'});
+
+      // Currently CiviCRM Participant getfields api is limited to return only 25 fields, include some required fields.
+      fieldList.push({key: 'event_title', label: 'Event Title'});
+      fieldList.push({key: 'participant_status', label: 'Participant Status'});
+      fieldList.push({key: 'participant_role', label: 'Participant Role'});
+
+      return fieldList;
+    });
   };
 };
 

@@ -3,20 +3,20 @@ const triggerHelper = new TriggerHelper('update_participant', 'Triggers when the
 
 const listParticipants = (z, bundle) => {
 
-  const participant = {
-    id: bundle.cleanedRequest.id,
-    contact_id: bundle.cleanedRequest.contact_id,
-    contact_first_name: bundle.cleanedRequest.contact_first_name,
-    contact_last_name: bundle.cleanedRequest.contact_last_name,
-    contact_email: bundle.cleanedRequest.contact_email,
-    event_id: bundle.cleanedRequest.event_id,
-    status_id: bundle.cleanedRequest.status_id,
-    role_id: bundle.cleanedRequest.role_id,
-    source: bundle.cleanedRequest.source,
-    fee_amount: bundle.cleanedRequest.fee_amount,
-  };
+  // const participant = {
+  //   id: bundle.cleanedRequest.id,
+  //   contact_id: bundle.cleanedRequest.contact_id,
+  //   contact_first_name: bundle.cleanedRequest.contact_first_name,
+  //   contact_last_name: bundle.cleanedRequest.contact_last_name,
+  //   contact_email: bundle.cleanedRequest.contact_email,
+  //   event_id: bundle.cleanedRequest.event_id,
+  //   participant_status: bundle.cleanedRequest.participant_status,
+  //   role_id: bundle.cleanedRequest.role_id,
+  //   source: bundle.cleanedRequest.source,
+  //   fee_amount: bundle.cleanedRequest.fee_amount,
+  // };
 
-  return [participant];
+  return [bundle.cleanedRequest];
 
 };
 
@@ -63,7 +63,7 @@ module.exports = {
       contact_last_name: 'Doe',
       contact_email: 'john.doe@example.com',
       event_id: 'Fall Fundraiser Dinner',
-      status_id: 'Registered',
+      participant_status: 'Registered',
       role_id: 'Volunteer',
       source: 'Created from Zapier',
       fee_amount: '100',
@@ -77,18 +77,18 @@ module.exports = {
     // For a more complete example of using dynamic fields see
     // https://github.com/zapier/zapier-platform-cli#customdynamic-fields.
     // Alternatively, a static field definition should be provided, to specify labels for the fields
-    // Todo: Replace it with participant.getfields api.
-    outputFields: [
-      { key: 'id', label: 'Participant ID' },
-      { key: 'contact_id', label: 'Participant Name' },
-      { key: 'contact_first_name', label: 'Participant First Name' },
-      { key: 'contact_last_name', label: 'Participant Last Name' },
-      { key: 'contact_email', label: 'Participant Email ID' },
-      { key: 'event_id', label: 'Event Name' },
-      { key: 'status_id', label: 'Status' },
-      { key: 'role_id', label: 'Role' },
-      { key: 'source', label: 'Source' },
-      { key: 'fee_amount', label: 'Fee Amount' },
-    ],
+    outputFields: [triggerHelper.getParticipantFields],
+    // outputFields: [
+    //   { key: 'id', label: 'Participant ID' },
+    //   { key: 'contact_id', label: 'Participant Name' },
+    //   { key: 'contact_first_name', label: 'Participant First Name' },
+    //   { key: 'contact_last_name', label: 'Participant Last Name' },
+    //   { key: 'contact_email', label: 'Participant Email ID' },
+    //   { key: 'event_title', label: 'Event Name' },
+    //   { key: 'participant_status', label: 'Status' },
+    //   { key: 'role_id', label: 'Role' },
+    //   { key: 'source', label: 'Source' },
+    //   { key: 'fee_amount', label: 'Fee Amount' },
+    // ],
   },
 };
