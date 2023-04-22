@@ -11,9 +11,9 @@ const listParticipants = (z, bundle) => {
   //   contact_email: bundle.cleanedRequest.contact_email,
   //   event_id: bundle.cleanedRequest.event_id,
   //   participant_status: bundle.cleanedRequest.participant_status,
-  //   role_id: bundle.cleanedRequest.role_id,
-  //   source: bundle.cleanedRequest.source,
-  //   fee_amount: bundle.cleanedRequest.fee_amount,
+  //   participant_role: bundle.cleanedRequest.participant_role,
+  //   participant_source: bundle.cleanedRequest.participant_source,
+  //   participant_fee_amount: bundle.cleanedRequest.participant_fee_amount,
   // };
 
   return [bundle.cleanedRequest];
@@ -64,9 +64,9 @@ module.exports = {
       contact_email: 'john.doe@example.com',
       event_id: 'Fall Fundraiser Dinner',
       participant_status: 'Registered',
-      role_id: 'Volunteer',
-      source: 'Created from Zapier',
-      fee_amount: '100',
+      participant_role: 'Volunteer',
+      participant_source: 'Created from Zapier',
+      participant_fee_amount: '100',
     },
 
     // If the resource can have fields that are custom on a per-user basis, define a function to fetch the custom
@@ -86,9 +86,9 @@ module.exports = {
     //   { key: 'contact_email', label: 'Participant Email ID' },
     //   { key: 'event_title', label: 'Event Name' },
     //   { key: 'participant_status', label: 'Status' },
-    //   { key: 'role_id', label: 'Role' },
-    //   { key: 'source', label: 'Source' },
-    //   { key: 'fee_amount', label: 'Fee Amount' },
+    //   { key: 'participant_role', label: 'Role' },
+    //   { key: 'participant_source', label: 'Participant Source' },
+    //   { key: 'participant_fee_amount', label: 'Fee Amount' },
     // ],
   },
 };
