@@ -9,25 +9,24 @@ const test = (z, bundle) => {
 
 module.exports = {
   type: 'custom',
-
   fields: [
     {
       key: 'baseUrl',
       type: 'string',
       required: true,
-      helpText: 'Website Base URL.',
+      helpText: 'The base URL for the API. eg https://example.com',
     },
     {
       key: 'api_key',
       type: 'string',
       required: true,
-      helpText: 'API Key of user 1.',
+      helpText: 'API of user 1. You can use the extension https://civicrm.org/extensions/api-key to create/view API key of any user',
     },
     {
       key: 'key',
       type: 'string',
       required: true,
-      helpText: 'Site Key found in civicrm.settings.php.',
+      helpText: 'Site Key found in civicrm.settings.php. For more information, see https://docs.civicrm.org/sysadmin/en/latest/setup/secret-keys/#civicrm_site_key',
     },
   ],
 
