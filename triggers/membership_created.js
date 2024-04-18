@@ -15,8 +15,6 @@ const getMembershipFields = (z, bundle) => {
 };
 
 module.exports = {
-  // see here for a full list of available properties:
-  // https://github.com/zapier/zapier-platform/blob/main/packages/schema/docs/build/schema.md#triggerschema
   key: 'membership_created',
   noun: 'Create Membership',
 
@@ -32,9 +30,6 @@ module.exports = {
     perform: listMemberships,
     performList: getFallbackRealMembership,
 
-    // In cases where Zapier needs to show an example record to the user, but we are unable to get a live example
-    // from the API, Zapier will fallback to this hard-coded sample. It should reflect the data structure of
-    // returned records, and have obvious placeholder values that we can show to any user.
     sample: {
       "id": 1,
       "contact_id": 6,
@@ -54,12 +49,6 @@ module.exports = {
       "campaign_id": null
     },
 
-    // If fields are custom to each user (like spreadsheet columns), `outputFields` can create human labels
-    // For a more complete example of using dynamic fields see
-    // https://github.com/zapier/zapier-platform/tree/main/packages/cli#customdynamic-fields
-    // Alternatively, a static field definition can be provided, to specify labels for the fields
-    outputFields: [
-      getMembershipFields
-    ]
+    outputFields: [getMembershipFields]
   }
 };
