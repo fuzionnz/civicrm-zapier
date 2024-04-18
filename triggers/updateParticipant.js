@@ -17,14 +17,7 @@ const getParticipantFields = async (z, bundle) => {
     { entity: 'Contact', prefix: 'contact_id.', label: ' (Participant Contact)' },
     { entity: 'Event', prefix: 'event_id.', label: ' (Participant Event)' },
   ];
-
-  const promises = entities.map(({ entity, prefix, label }) => triggerHelper.fetchFields(z, bundle, entity, prefix, label));
-
-  const fieldLists = await Promise.all(promises);
-  const mergedFields = fieldLists.reduce((accumulator, currentList) => accumulator.concat(currentList), []);
-  const participantFields = await triggerHelper.fetchFields(z, bundle, 'Participant');
-
-  return [...mergedFields, ...participantFields];
+  return triggerHelper.fetchFieldsForEntities(z, bundle, entities, 'Participant');
 };
 
 module.exports = {

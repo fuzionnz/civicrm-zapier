@@ -11,7 +11,10 @@ const getFallbackRealMembership = (z, bundle) => {
 };
 
 const getMembershipFields = (z, bundle) => {
-  return triggerHelper.fetchFields(z, bundle, 'Membership');
+  const entities = [
+    { entity: 'Contact', prefix: 'contact_id.', label: ' (Membership Contact)' },
+  ];
+  return triggerHelper.fetchFieldsForEntities(z, bundle, entities, 'Membership');
 };
 
 module.exports = {

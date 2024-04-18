@@ -18,14 +18,7 @@ const getContactFields = async (z, bundle) => {
     { entity: 'Email', prefix: 'email_primary.', label: ' (Primary Email)' },
     { entity: 'Phone', prefix: 'phone_primary.', label: ' (Primary Phone)' }
   ];
-
-  const promises = entities.map(({ entity, prefix, label }) => triggerHelper.fetchFields(z, bundle, entity, prefix, label));
-
-  const fieldLists = await Promise.all(promises);
-  const mergedFields = fieldLists.reduce((accumulator, currentList) => accumulator.concat(currentList), []);
-  const contactFields = await triggerHelper.fetchFields(z, bundle, 'Contact');
-
-  return [...mergedFields, ...contactFields];
+  return triggerHelper.fetchFieldsForEntities(z, bundle, entities, 'Contact');
 };
 
 module.exports = {
