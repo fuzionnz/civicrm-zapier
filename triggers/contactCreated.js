@@ -2,27 +2,30 @@ const TriggerHelper = require('./triggerHelper');
 const triggerHelper = new TriggerHelper('create_contact', 'Triggers when the contact is created');
 
 const listContacts = (z, bundle) => {
-  // var field_list = triggerHelper.getContactFields();
-
-  // const contact = {
-  //   id: bundle.cleanedRequest.id,
-  //   first_name: bundle.cleanedRequest.first_name,
-  //   last_name: bundle.cleanedRequest.last_name,
-  //   email: bundle.cleanedRequest.email,
-  // };
-
   return [bundle.cleanedRequest];
-
 };
 
 const getFallbackRealContact = (z, bundle) => {
-  // For the test poll, you should get some real data, to aid the setup process.
-  const options = {
-    url: bundle.authData.baseUrl + '/civicrm/zapier/contacts',
+  const params = {
+    'select': ['*', 'custom.*', 'address_primary.*', 'email_primary.*', 'phone_primary.*'],
   };
+  return triggerHelper.getEntityData(z, bundle, 'Contact', params);
+};
 
-  return z.request(options)
-    .then((response) => JSON.parse(response.content));
+const getContactFields = async (z, bundle) => {
+  const entities = [
+    { entity: 'Address', prefix: 'address_primary.', label: ' (Primary Address)' },
+    { entity: 'Email', prefix: 'email_primary.', label: ' (Primary Email)' },
+    { entity: 'Phone', prefix: 'phone_primary.', label: ' (Primary Phone)' }
+  ];
+
+  const promises = entities.map(({ entity, prefix, label }) => triggerHelper.fetchFields(z, bundle, entity, prefix, label));
+
+  const fieldLists = await Promise.all(promises);
+  const mergedFields = fieldLists.reduce((accumulator, currentList) => accumulator.concat(currentList), []);
+  const contactFields = await triggerHelper.fetchFields(z, bundle, 'Contact');
+
+  return [...mergedFields, ...contactFields];
 };
 
 // We recommend writing your triggers separate like this and rolling them
@@ -66,7 +69,7 @@ module.exports = {
     // For a more complete example of using dynamic fields see
     // https://github.com/zapier/zapier-platform-cli#customdynamic-fields.
     // Alternatively, a static field definition should be provided, to specify labels for the fields
-    outputFields: [triggerHelper.getContactFields],
+    outputFields: [getContactFields],
     // outputFields: [
     //   { key: 'id', label: 'Contact ID' },
     //   { key: 'first_name', label: 'First Name' },

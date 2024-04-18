@@ -2,6 +2,45 @@ TriggerHelper = function(triggerType, hookDescription) {
   this.type = triggerType;
   this.hookDescription = hookDescription;
 
+  this.getEntityData = (z, bundle, entity, customParams = {}) => {
+    const defaultParams = {
+      limit: 1
+    };
+
+    const params = Object.assign({}, defaultParams, customParams);
+
+    const options = {
+      url: bundle.authData.baseUrl + '/civicrm/ajax/api4/' + entity + '/get',
+      method: 'GET',
+      body: {
+        params: JSON.stringify(params)
+      },
+      headers: {
+        'X-Civi-Auth': 'Bearer ' + bundle.authData.api_key
+      }
+    };
+
+    return z.request(options).then(response => response.json.values);
+  };
+
+  this.fetchFields = (z, bundle, entity, key_prefix = '', val_suffix = '') => {
+    const field_url = bundle.authData.baseUrl + '/civicrm/ajax/api4/' + entity + '/getFields';
+    const params = {
+      select: ['title', 'label', 'name']
+    };
+
+    return z.request({
+      method: 'GET',
+      url: field_url,
+      headers: {
+        'X-Civi-Auth': 'Bearer ' + bundle.authData.api_key
+      },
+      body: {
+        params: JSON.stringify(params)
+      }
+    }).then(response => response.json.values.map(value => ({ key: key_prefix + value.name, label: value.title + val_suffix })));
+  };
+
   this.unsubscribeHook = (z, bundle) => {
     // bundle.subscribeData contains the parsed response JSON from the subscribe
     // request made initially.
@@ -32,11 +71,10 @@ TriggerHelper = function(triggerType, hookDescription) {
     // You can build requests and our client will helpfully inject all the variables
     // you need to complete. You can also register middleware to control this.
     const options = {
-      url: bundle.authData.baseUrl + '/civicrm/zaphooks/new',
+      url: bundle.authData.baseUrl + '/civicrm/zaphooks/new?body=' + encodeURIComponent(JSON.stringify(data)),
       method: 'POST',
-      body: JSON.stringify(data),
       headers: {
-        'content-type': 'application/json'
+        'Content-Type': 'application/json'
       }
     };
 
@@ -44,43 +82,6 @@ TriggerHelper = function(triggerType, hookDescription) {
     return z.request(options).then(response => response.json);
   };
 
-  this.getContactFields = (z, bundle) => {
-    var field_url = bundle.authData.baseUrl+'/sites/all/modules/civicrm/extern/rest.php?entity=Contact&action=getfields&json={}&api_key='+ bundle.authData.api_key +'&key=' + bundle.authData.key;
-
-    return z.request({
-      url: field_url,
-    }).then((response) => {
-      var fieldList = [];
-      $.each(response.values, function( index, value ) {
-        fieldList.push({key: value.name, label: value.title})
-      });
-      return fieldList;
-    });
-  };
-
-  this.getParticipantFields = (z, bundle) => {
-    var field_url = bundle.authData.baseUrl+'/sites/all/modules/civicrm/extern/rest.php?entity=Participant&action=getfields&json={}&api_key='+ bundle.authData.api_key +'&key=' + bundle.authData.key;
-
-    return z.request({
-      url: field_url,
-    }).then((response) => {
-      var fieldList = [];
-      $.each(response.values, function( index, value ) {
-        fieldList.push({key: value.name, label: value.title})
-      });
-      // Include few more contact fields separately.
-      fieldList.push({key: 'contact_first_name', label: 'Contact First Name'});
-      fieldList.push({key: 'contact_last_name', label: 'Contact Last Name'});
-      fieldList.push({key: 'contact_email', label: 'Contact Email'});
-
-      // Currently CiviCRM Participant getfields api is limited to return only 25 fields, include some required fields.
-      fieldList.push({key: 'event_title', label: 'Event Title'});
-      fieldList.push({key: 'participant_status', label: 'Participant Status'});
-      fieldList.push({key: 'participant_role', label: 'Participant Role'});
-
-      return fieldList;
-    });
-  };
 };
 
 module.exports = TriggerHelper;
