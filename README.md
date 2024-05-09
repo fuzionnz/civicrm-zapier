@@ -5,7 +5,7 @@ This integration integrates a CiviCRM instance with 1000+ third party web servic
 Supports 3 triggers: `Contact`, `Membership` & `Participant`.
 
 
-# Development
+## Development
 
 If you'd like to help with development, read the [Zapier tutorial](https://github.com/zapier/zapier-platform/tree/master/packages/cli#quick-setup-guide) and install all requirements.
 
