@@ -19,7 +19,7 @@ Find out more on the latest docs: https://github.com/zapier/zapier-platform/blob
 
 This app is contributed by [Fuzion](https://www.fuzion.co.nz).
 
-We welcome contributions and bug reports via the [civicrm-zapier issue queue](https://github.com/fuzionnz/civicrm-zapier/).
+We welcome contributions and bug reports via the [civicrm-zapier issue queue](https://github.com/fuzionnz/civicrm-zapier/issues/).
 
 Community support is available via CiviCRM community channels:
 
