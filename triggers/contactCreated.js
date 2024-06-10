@@ -1,3 +1,6 @@
+const Civicrm = require('../civicrm');
+const civicrm = new Civicrm();
+
 const TriggerHelper = require('./triggerHelper');
 const triggerHelper = new TriggerHelper('create_contact', 'Triggers when the contact is created');
 
@@ -9,7 +12,7 @@ const getFallbackRealContact = (z, bundle) => {
   const params = {
     'select': ['*', 'custom.*', 'address_primary.*', 'email_primary.*', 'phone_primary.*'],
   };
-  return triggerHelper.getEntityData(z, bundle, 'Contact', params);
+  return civicrm.getEntityData(z, bundle, 'Contact', params);
 };
 
 const getContactFields = async (z, bundle) => {
@@ -18,7 +21,7 @@ const getContactFields = async (z, bundle) => {
     { entity: 'Email', prefix: 'email_primary.', label: ' (Primary Email)' },
     { entity: 'Phone', prefix: 'phone_primary.', label: ' (Primary Phone)' }
   ];
-  return triggerHelper.fetchFieldsForEntities(z, bundle, entities, 'Contact');
+  return civicrm.fetchFieldsForEntities(z, bundle, entities, 'Contact');
 };
 
 module.exports = {

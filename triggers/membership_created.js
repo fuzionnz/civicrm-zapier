@@ -1,20 +1,22 @@
+const Civicrm = require('../civicrm');
+const civicrm = new Civicrm();
+
 const TriggerHelper = require('./triggerHelper');
 const triggerHelper = new TriggerHelper('membership_created', 'Triggers when the membership is created');
-
 
 const listMemberships = (z, bundle) => {
   return [bundle.cleanedRequest];
 };
 
 const getFallbackRealMembership = (z, bundle) => {
-  return triggerHelper.getEntityData(z, bundle, 'Membership');
+  return civicrm.getEntityData(z, bundle, 'Membership');
 };
 
 const getMembershipFields = (z, bundle) => {
   const entities = [
     { entity: 'Contact', prefix: 'contact_id.', label: ' (Membership Contact)' },
   ];
-  return triggerHelper.fetchFieldsForEntities(z, bundle, entities, 'Membership');
+  return civicrm.fetchFieldsForEntities(z, bundle, entities, 'Membership');
 };
 
 module.exports = {

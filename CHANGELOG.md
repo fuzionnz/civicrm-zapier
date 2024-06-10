@@ -1,3 +1,7 @@
+## 1.0.2
+
+- Supports Create Action for Contact & Email.
+
 ## 1.0.1
 
 - Adds a new trigger for membership and participant.

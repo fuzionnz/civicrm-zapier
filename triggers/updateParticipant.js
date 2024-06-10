@@ -1,3 +1,6 @@
+const Civicrm = require('../civicrm');
+const civicrm = new Civicrm();
+
 const TriggerHelper = require('./triggerHelper');
 const triggerHelper = new TriggerHelper('update_participant', 'Triggers when the participant is updated');
 
@@ -9,7 +12,7 @@ const getFallbackRealParticipant = (z, bundle) => {
   const params = {
     'select': ['*', 'custom.*', 'contact_id.*', 'event_id.*'],
   };
-  return triggerHelper.getEntityData(z, bundle, 'Participant', params);
+  return civicrm.getEntityData(z, bundle, 'Participant', params);
 };
 
 const getParticipantFields = async (z, bundle) => {
@@ -17,7 +20,7 @@ const getParticipantFields = async (z, bundle) => {
     { entity: 'Contact', prefix: 'contact_id.', label: ' (Participant Contact)' },
     { entity: 'Event', prefix: 'event_id.', label: ' (Participant Event)' },
   ];
-  return triggerHelper.fetchFieldsForEntities(z, bundle, entities, 'Participant');
+  return civicrm.fetchFieldsForEntities(z, bundle, entities, 'Participant');
 };
 
 module.exports = {
