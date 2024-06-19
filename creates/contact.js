@@ -15,8 +15,8 @@ module.exports = {
 
   display: {
     // What the user will see in the Zap Editor when selecting an action
-    label: 'Create Contact',
-    description: 'Creates a new contact.'
+    label: 'Create or Update Contact',
+    description: 'Create a new contact or update an existing one based on the provided ID.'
   },
 
   operation: {

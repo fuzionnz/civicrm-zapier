@@ -5,6 +5,8 @@ const getMembershipCreated = require("./triggers/membership_created");
 
 const contactCreate = require('./creates/contact');
 const emailCreate = require('./creates/email');
+const groupContactCreate = require('./creates/addtogroup');
+const entityTagCreate = require('./creates/addtag');
 
 const App = {
   version: require('./package.json').version,
@@ -17,7 +19,9 @@ const App = {
   },
   creates: {
     [contactCreate.key]: contactCreate,
-    [emailCreate.key]: emailCreate
+    [emailCreate.key]: emailCreate,
+    [groupContactCreate.key]: groupContactCreate,
+    [entityTagCreate.key]: entityTagCreate
   },
 };
 

@@ -62,33 +62,47 @@ Civicrm = function() {
     return [...mergedFields, ...entityFields];
   };
 
-  this.create = (z, entity, bundle) => {
+  this.create = async (z, entity, bundle) => {
     inputData = bundle.inputData
     if (!inputData || Object.keys(inputData).length === 0) {
       throw new Error('Error: No fields have been mapped. Please ensure you have selected values for at least one field(s).');
     }
 
     const baseUrl = bundle.authData.baseUrl.replace(/\/+$/, '')
-    const action = 'create'
-
-
-    const url = `${baseUrl}/civicrm/ajax/api4/${entity}/${action}`
-    const params = {
-      values: inputData
-    };
+    let action, params;
+    if (inputData.id) {
+      action = 'update';
+      params = {
+        values: inputData,
+        where: [['id', '=', inputData.id]]
+      };
+    }
+    else {
+      action = 'create';
+      params = {
+        values: inputData
+      };
+    }
+    const url = `${baseUrl}/civicrm/ajax/api4/${entity}/${action}`;
     const apiparams = `params=${encodeURIComponent(JSON.stringify(params))}&index=0`
 
-    const responsePromise = z.request({
-      method: 'POST',
-      headers: {
-        'X-Civi-Auth': 'Bearer ' + bundle.authData.api_key,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      url: url,
-      body: apiparams
-    });
+    try {
+      const response = await z.request({
+        method: 'POST',
+        headers: {
+          'X-Civi-Auth': 'Bearer ' + bundle.authData.api_key,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        url: url,
+        body: apiparams
+      });
 
-    return responsePromise.then(response => JSON.parse(response.content));
+      return JSON.parse(response.content);
+    }
+    catch (error) {
+      z.console.error(`Failed to ${action} ${entity}: ${error.message}`);
+      return { success: false, error: error.message };
+    }
   };
 
   this.fetchCreateFields = (z, bundle, entity) => {

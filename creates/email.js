@@ -48,8 +48,8 @@ module.exports = {
 
   display: {
     // What the user will see in the Zap Editor when selecting an action
-    label: 'Create Email',
-    description: 'Add email to contact.'
+    label: 'Create or Update Email',
+    description: 'Add a new email on a contact or update an existing one based on the provided ID.'
   },
 
   operation: {
