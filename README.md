@@ -2,9 +2,6 @@
 
 This integration integrates a CiviCRM instance with 1000+ third party web services via the [Zapier](https://zapier.com/) web automation service.
 
-Supports 3 triggers: `Contact`, `Membership` & `Participant`.
-
-
 ## Development
 
 If you'd like to help with development, read the [Zapier tutorial](https://github.com/zapier/zapier-platform/tree/master/packages/cli#quick-setup-guide) and install all requirements.
